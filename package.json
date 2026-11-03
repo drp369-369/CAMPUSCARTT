@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
-    "test": "node test/integration.test.js",
+    "test": "node test/run-all.js",
+    "test:unit": "node test/validation.test.js && node test/auth.test.js",
+    "test:routes": "node test/backend-routes.test.js",
     "test:e2e": "node test/e2e-interactions.test.js"
   },
   "keywords": [

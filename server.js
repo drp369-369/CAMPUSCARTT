@@ -85,11 +85,19 @@ async function requestHandler(req, res) {
     const candidatePath1 = path.join(__dirname, 'api', `${route}.js`);
     const candidatePath2 = path.join(__dirname, 'api', route, 'index.js');
     let apiFilePath = null;
+    let dynamicId = null;
 
     if (fs.existsSync(candidatePath1) && fs.statSync(candidatePath1).isFile()) {
       apiFilePath = candidatePath1;
     } else if (fs.existsSync(candidatePath2) && fs.statSync(candidatePath2).isFile()) {
       apiFilePath = candidatePath2;
+    } else if (route.startsWith('products/')) {
+      // Dynamic fallback for /api/products/<id> -> api/products/index.js
+      dynamicId = route.replace(/^products\//, '').split('/')[0];
+      const productsIndex = path.join(__dirname, 'api', 'products', 'index.js');
+      if (fs.existsSync(productsIndex)) {
+        apiFilePath = productsIndex;
+      }
     }
 
     if (apiFilePath) {
@@ -98,6 +106,9 @@ async function requestHandler(req, res) {
         const queryObj = {};
         for (const [key, value] of reqUrl.searchParams.entries()) {
           queryObj[key] = value;
+        }
+        if (dynamicId && !queryObj.id) {
+          queryObj.id = dynamicId;
         }
         req.query = queryObj;
         req.body = await parseRequestBody(req);
@@ -233,6 +244,9 @@ function startServer(port = PORT, host = HOST) {
 
 function stopServer() {
   return new Promise((resolve) => {
+    if (server.closeAllConnections) {
+      server.closeAllConnections();
+    }
     server.close(() => resolve());
   });
 }

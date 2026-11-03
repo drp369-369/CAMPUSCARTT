@@ -45,18 +45,40 @@ c:\STARTUP_PRACTICUM/
 ├── package.json            # Node project configuration & dependencies
 ├── vercel.json             # Vercel deployment routing & headers
 ├── server.js               # Zero-dependency local dev server (emulates Vercel functions)
+├── docs/
+│   └── API.md              # Complete RESTful API documentation & schemas
 ├── api/                    # Vercel Serverless Function Endpoints
 │   ├── health.js           # API health check endpoint (/api/health)
+│   ├── auth/
+│   │   ├── register.js     # Student registration (/api/auth/register)
+│   │   ├── login.js        # Student login & JWT issuance (/api/auth/login)
+│   │   ├── logout.js       # Session logout (/api/auth/logout)
+│   │   └── me.js           # Current user profile (/api/auth/me)
+│   ├── products/
+│   │   └── index.js        # Listings CRUD, search & filters (/api/products)
+│   ├── reports/
+│   │   └── index.js        # Item reporting & moderation (/api/reports)
 │   └── lib/
-│       └── db.js           # Cached MongoDB Atlas connection singleton
-└── public/                 # Static Frontend Web Assets
-    ├── index.html          # High-converting, responsive landing page
-    ├── css/
-    │   ├── style.css       # Design tokens, typography, navbar, cards, footer
-    │   └── home.css        # Hero section, categories, product grid, trust box
-    └── js/
-        ├── config.js       # App configuration, categories & seed listings
-        └── main.js         # Reactive UI, search filtering, modals, mobile drawer
+│       ├── db.js           # Cached MongoDB Atlas connection & index initialization
+│       ├── auth.js         # bcrypt password hashing, JWT signing & guards
+│       ├── validation.js   # Input validation for users, products & reports
+│       └── response.js     # Standardized JSON response and error handlers
+├── public/                 # Static Frontend Web Assets
+│   ├── index.html          # High-converting, responsive landing page
+│   ├── css/
+│   │   ├── style.css       # Design tokens, typography, navbar, cards, footer
+│   │   └── home.css        # Hero section, categories, product grid, trust box
+│   └── js/
+│       ├── config.js       # App configuration, categories & seed listings
+│       └── main.js         # Reactive UI, search filtering, modals, mobile drawer
+└── test/                   # Automated Test Suites
+    ├── run-all.js          # Master test suite runner
+    ├── validation.test.js  # Schema guard and domain verification tests
+    ├── auth.test.js        # bcrypt, JWT, and middleware guard tests
+    ├── integration.test.js # HTTP integration tests for landing page & health
+    ├── backend-routes.test.js # API route dispatching & validation tests
+    ├── browser-verify.js   # Headless Chrome visual inspection runner
+    └── e2e-interactions.test.js # DOM interaction tests inside headless Chrome
 ```
 
 ---
@@ -77,45 +99,54 @@ To run CampusCart locally:
    # Update MONGODB_URI and JWT_SECRET in .env
    ```
 
-3. **Install dependencies (when ready for backend DB testing):**
+3. **Install dependencies:**
    ```bash
    npm install
    ```
 
-4. **Start the local development server:**
+4. **Run automated test suites:**
    ```bash
-   node server.js
-   # or
+   npm test
+   ```
+
+5. **Start the local development server:**
+   ```bash
    npm run dev
    ```
 
-5. **Open your browser:**
+6. **Open your browser:**
    - Web Application: [http://localhost:3000](http://localhost:3000)
    - API Health Check: [http://localhost:3000/api/health](http://localhost:3000/api/health)
+   - API Documentation: [`docs/API.md`](docs/API.md)
 
 ---
 
 ## 🗺️ Incremental Development Roadmap
 
-- [x] **Phase 1: Project Foundation & Responsive Landing Page (Current)**
+- [x] **Phase 1: Project Foundation & Responsive Landing Page**
   - Repository initialized with clean modular architecture
   - Vercel-ready structure (`/api`, `/public`, `vercel.json`)
   - Design tokens, typography, and responsive CSS system
   - High-converting landing page with Hero, Category Explorer, and Product Grid
   - Real-time client search, category filtering, and item quick-preview modal
   - Zero-dependency local runner `server.js` and `/api/health` endpoint
-- [ ] **Phase 2: Authentication & Student Verification**
-  - Registration with college email / student ID
-  - Password hashing via bcrypt
-  - JWT session generation & cookie/header verification
-- [ ] **Phase 3: Product Listing Management**
-  - Post listing form with image upload (cloud storage integration)
-  - Price, condition tag, hostel/campus location selection
-  - User Dashboard ("My Listings" edit / mark as sold / delete)
-- [ ] **Phase 4: Search, Filtering & Seller Contact**
-  - MongoDB Atlas aggregation for full-text keyword search and price filters
-  - Direct student contact / chat initiation
-- [ ] **Phase 5: Safety & Moderation**
-  - Product reporting system
-  - Basic admin dashboard for listing moderation
+- [x] **Phase 2: Backend & Database Foundation (Current)**
+  - MongoDB Atlas connection caching & collection accessors (`users`, `products`, `reports`)
+  - Automated database index creation (unique email, compound filters, text search)
+  - Student registration, login, logout, and profile management with bcrypt & JWT
+  - Configurable university email domain verification guard
+  - Full Product CRUD with multi-attribute filtering, price ranges, and keyword search
+  - Product moderation reporting endpoint
+  - Comprehensive REST API documentation in `docs/API.md`
+  - Automated test suite covering validation, auth, routes, and UI interactions (82 passing tests)
+- [ ] **Phase 3: Frontend Integration & Listing Creation Flow**
+  - Connect registration and login modals to `/api/auth`
+  - Product listing creation form with client-side image preview
+  - User dashboard ("My Active Listings", "Mark as Sold", "Edit Price")
+- [ ] **Phase 4: Direct Student Contact & Real-Time Search Integration**
+  - Direct student contact modal connected to seller profile
+  - Live search connected to `/api/products` with pagination
+- [ ] **Phase 5: Safety, Moderation & Deployment Hardening**
+  - Moderation dashboard for reported listings
+  - Final Vercel production deployment and verification
 
