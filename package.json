@@ -5,7 +5,9 @@
   "main": "api/health.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "test": "node test/integration.test.js",
+    "test:e2e": "node test/e2e-interactions.test.js"
   },
   "keywords": [
     "campus-marketplace",

@@ -294,6 +294,22 @@ document.addEventListener('DOMContentLoaded', () => {
     closeDrawerBtn.addEventListener('click', () => {
       mobileDrawer.classList.remove('open');
     });
+
+    // Close drawer when clicking any link inside the drawer
+    mobileDrawer.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('click', () => {
+        mobileDrawer.classList.remove('open');
+      });
+    });
+
+    // Close drawer when clicking outside
+    document.addEventListener('click', (e) => {
+      if (mobileDrawer.classList.contains('open') && 
+          !mobileDrawer.contains(e.target) && 
+          !mobileToggle.contains(e.target)) {
+        mobileDrawer.classList.remove('open');
+      }
+    });
   }
 
   // Smooth scroll utility
@@ -336,3 +352,4 @@ document.addEventListener('DOMContentLoaded', () => {
   renderFilterTabs();
   renderProducts();
 });
+

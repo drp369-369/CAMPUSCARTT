@@ -1,35 +1,43 @@
 // api/lib/db.js - MongoDB Connection Helper with Serverless Connection Caching
 const { MongoClient } = require('mongodb');
 
-const uri = process.env.MONGODB_URI;
 const options = {
   maxPoolSize: 10,
   serverSelectionTimeoutMS: 5000,
   socketTimeoutMS: 45000,
 };
 
-let cachedClient = null;
-let cachedDb = null;
+// Use global variable to cache connection across Vercel serverless function invocations
+let cached = global._mongoCache;
+
+if (!cached) {
+  cached = global._mongoCache = { client: null, db: null, promise: null };
+}
 
 async function connectToDatabase() {
+  const uri = process.env.MONGODB_URI;
+
   if (!uri) {
     throw new Error('Please define the MONGODB_URI environment variable inside .env or Vercel dashboard');
   }
 
-  // If cached connection exists and is still active, return it
-  if (cachedClient && cachedDb) {
-    return { client: cachedClient, db: cachedDb };
+  // If connection is already established and active, return cached instances
+  if (cached.client && cached.db) {
+    return { client: cached.client, db: cached.db };
   }
 
-  // Create new connection if not cached
-  const client = new MongoClient(uri, options);
-  await client.connect();
-  const db = client.db('campuscart');
+  // If connection promise does not exist, create a new one
+  if (!cached.promise) {
+    const client = new MongoClient(uri, options);
+    cached.promise = client.connect().then((connectedClient) => {
+      const db = connectedClient.db('campuscart');
+      cached.client = connectedClient;
+      cached.db = db;
+      return { client: connectedClient, db };
+    });
+  }
 
-  cachedClient = client;
-  cachedDb = db;
-
-  return { client, db };
+  return await cached.promise;
 }
 
 module.exports = { connectToDatabase };
