@@ -1,0 +1,26 @@
+{
+  "name": "campuscart",
+  "version": "0.1.0",
+  "description": "CampusCart – University-focused student marketplace (CS3911 Startup Practicum 3)",
+  "main": "api/health.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "campus-marketplace",
+    "student-marketplace",
+    "ecommerce",
+    "startup-practicum"
+  ],
+  "authors": [
+    "Deep Ranjan Paul (1RUA24SCSOO30) - Technical Lead",
+    "Yuvrat Mittal (1rua24cse0552) - Product and Development Lead"
+  ],
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.12.0"
+  }
+}

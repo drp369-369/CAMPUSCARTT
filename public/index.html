@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CampusCart – University-focused student marketplace. Buy, sell, and exchange textbooks, electronics, stationery, and hostel essentials within your campus community.">
+  <title>CampusCart – Your Campus. Your Marketplace.</title>
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/home.css">
+
+  <!-- Favicon SVG -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛒</text></svg>">
+</head>
+<body>
+
+  <!-- Top Sticky Navigation Bar -->
+  <header class="site-header">
+    <div class="container nav-container">
+      
+      <!-- Brand Logo -->
+      <a href="/" class="brand-logo" aria-label="CampusCart Home">
+        <div class="logo-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="8" cy="21" r="1"/>
+            <circle cx="19" cy="21" r="1"/>
+            <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+          </svg>
+        </div>
+        <span>CampusCart</span>
+        <span class="brand-badge">Campus</span>
+      </a>
+
+      <!-- Quick Search Bar (Desktop) -->
+      <div class="header-search">
+        <div class="search-input-wrapper">
+          <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.3-4.3"/>
+          </svg>
+          <input type="text" id="header-search-input" class="search-input" placeholder="Search textbooks, calculators, tech gear..." aria-label="Search listings">
+          <span class="search-shortcut">Ctrl K</span>
+        </div>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav aria-label="Primary Navigation">
+        <ul class="nav-links">
+          <li><a href="#categories" class="nav-link">Categories</a></li>
+          <li><a href="#featured-listings" class="nav-link">Browse Deals</a></li>
+          <li><a href="#how-it-works" class="nav-link">How It Works</a></li>
+          <li><a href="#trust" class="nav-link">Safety</a></li>
+        </ul>
+      </nav>
+
+      <!-- Action Buttons -->
+      <div class="nav-actions">
+        <button class="btn btn-ghost action-login-btn">Sign In</button>
+        <button class="btn btn-primary action-sell-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          <span>Sell an Item</span>
+        </button>
+
+        <!-- Mobile Hamburger Button -->
+        <button class="mobile-nav-toggle" id="mobile-nav-toggle" aria-label="Open Navigation Menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="4" y1="6" x2="20" y2="6"/>
+            <line x1="4" y1="12" x2="20" y2="12"/>
+            <line x1="4" y1="18" x2="20" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Drawer -->
+  <div class="mobile-nav-drawer" id="mobile-drawer">
+    <div class="drawer-header">
+      <div class="brand-logo">
+        <div class="logo-icon" style="width: 30px; height: 30px;">🛒</div>
+        <span>CampusCart</span>
+      </div>
+      <button id="close-drawer-btn" style="background:none; border:none; font-size:1.5rem; cursor:pointer;">&times;</button>
+    </div>
+    <ul class="drawer-links">
+      <li><a href="#categories">Browse Categories</a></li>
+      <li><a href="#featured-listings">Featured Listings</a></li>
+      <li><a href="#how-it-works">How It Works</a></li>
+      <li><a href="#trust">Campus Safety</a></li>
+    </ul>
+    <div style="margin-top: auto; display: flex; flex-direction: column; gap: 0.75rem;">
+      <button class="btn btn-secondary action-login-btn" style="width:100%;">Sign In / Register</button>
+      <button class="btn btn-primary action-sell-btn" style="width:100%;">+ Post a Listing</button>
+    </div>
+  </div>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="container hero-grid">
+        
+        <div class="hero-content">
+          <div class="hero-pill">
+            <span class="pulse-dot"></span>
+            <span>Your Campus. Your Marketplace.</span>
+          </div>
+
+          <h1 class="hero-title">
+            Buy, Sell & Exchange with <span>Fellow Students</span>
+          </h1>
+
+          <p class="hero-subtitle">
+            The dedicated student-to-student marketplace. Save money on syllabus textbooks, calculators, electronics, hostel dorm furniture, and student necessities without middleman markups.
+          </p>
+
+          <!-- Interactive Hero Search Bar -->
+          <div class="hero-search-bar">
+            <input type="text" id="hero-search-input" class="hero-search-input" placeholder="What are you looking for today? (e.g. Casio fx-991, B.S. Grewal)">
+            <button class="btn btn-primary hero-search-btn" id="hero-search-btn">Search</button>
+          </div>
+
+          <!-- Hero Action Buttons -->
+          <div class="hero-actions">
+            <a href="#featured-listings" class="btn btn-primary btn-lg">Explore Campus Listings</a>
+            <button class="btn btn-secondary btn-lg action-sell-btn">Start Selling for Free</button>
+          </div>
+
+          <!-- Trust Badges -->
+          <div class="hero-trust-row">
+            <div class="trust-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+              <span>100% Student Verified</span>
+            </div>
+            <div class="trust-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+              <span>Zero Listing Fees</span>
+            </div>
+            <div class="trust-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+              <span>Instant Campus Hand-off</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Visual Showcase Card -->
+        <div class="hero-visual">
+          <div class="hero-card-stack">
+            
+            <div class="floating-pill floating-pill-2">
+              <span style="font-size: 1.1rem;">⚡</span>
+              <span>Trending Campus Deal</span>
+            </div>
+
+            <div class="hero-main-card">
+              <div class="card-hero-img-wrap">
+                <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=700&q=80" alt="B.S. Grewal Engineering Mathematics">
+                <span class="card-badge">Block A, Men's Hostel</span>
+              </div>
+              <div class="card-content">
+                <div class="card-category">Textbooks & Academics</div>
+                <h3 class="card-title">Higher Engineering Mathematics (44th Ed) – B.S. Grewal</h3>
+                <div class="card-price-row">
+                  <span class="current-price">₹450</span>
+                  <span class="original-price">₹899</span>
+                  <span class="discount-tag">50% OFF</span>
+                </div>
+                <div class="card-footer">
+                  <div class="seller-info">
+                    <div class="seller-avatar">AS</div>
+                    <span>Aarav Sharma (CSE 3rd Year)</span>
+                  </div>
+                  <span class="badge badge-accent">Verified Student</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="floating-pill floating-pill-1">
+              <span style="font-size: 1.1rem;">🛡️</span>
+              <span>Safe Meetup at Central Library</span>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Category Explorer Section -->
+    <section class="categories-section" id="categories">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-header-left">
+            <h2>Explore by Category</h2>
+            <p>Find pre-owned and new essentials curated specifically for college life</p>
+          </div>
+        </div>
+
+        <div class="categories-grid" id="categories-container">
+          <!-- Dynamically populated via config.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Listings Showcase -->
+    <section class="listings-section" id="featured-listings">
+      <div class="container">
+        
+        <div class="section-header">
+          <div class="section-header-left">
+            <h2>Live Campus Listings</h2>
+            <p>Available right now for exchange or hand-off across campus hostels and departments</p>
+          </div>
+          <div>
+            <span class="badge badge-primary">Updated Real-Time</span>
+          </div>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="filter-tabs" id="filter-tabs">
+          <!-- Filter tabs generated dynamically -->
+        </div>
+
+        <!-- Products Grid -->
+        <div class="products-grid" id="products-grid">
+          <!-- Populated dynamically via main.js -->
+        </div>
+
+      </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works-section" id="how-it-works">
+      <div class="container">
+        <div class="section-header" style="text-align: center; justify-content: center; flex-direction: column; align-items: center;">
+          <div class="badge badge-primary" style="margin-bottom: 0.5rem;">Simple & Seamless</div>
+          <h2>How CampusCart Works</h2>
+          <p>Buying and selling within your campus community is safe, fast, and completely commission-free.</p>
+        </div>
+
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-number">01</div>
+            <h3 class="step-title">List in 60 Seconds</h3>
+            <p class="step-desc">Take a couple of photos of your used textbooks, calculator or gadgets, set an honest student-friendly price, and publish your listing.</p>
+          </div>
+
+          <div class="step-card">
+            <div class="step-number">02</div>
+            <h3 class="step-title">Connect with Campus Peers</h3>
+            <p class="step-desc">Interested buyers from your university contact you directly. Chat, discuss item condition, and agree on a convenient time.</p>
+          </div>
+
+          <div class="step-card">
+            <div class="step-number">03</div>
+            <h3 class="step-title">Safe Campus Hand-Off</h3>
+            <p class="step-desc">Meet up safely on campus—at the university library, cafeteria, or hostel gate. Inspect the item in person and complete the exchange.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Campus Trust & Safety Section -->
+    <section class="trust-section" id="trust">
+      <div class="container">
+        <div class="trust-box">
+          <div>
+            <h2>Built Exclusively for University Students</h2>
+            <p>Traditional marketplaces like OLX or Facebook Marketplace often come with anonymous strangers, shipping delays, scam risks, and hefty platform fees. CampusCart brings commerce right to your campus doorstep.</p>
+            <div class="perks-list">
+              <div class="perk-item">
+                <div class="perk-icon">✓</div>
+                <div class="perk-text">
+                  <h4>Student Verified Profiles</h4>
+                  <p>Buy and sell with classmates and verified students from your own university community.</p>
+                </div>
+              </div>
+              <div class="perk-item">
+                <div class="perk-icon">✓</div>
+                <div class="perk-text">
+                  <h4>No Shipping Fees or Waiting</h4>
+                  <p>Pick up items within minutes between classes or right outside your hostel block.</p>
+                </div>
+              </div>
+              <div class="perk-item">
+                <div class="perk-icon">✓</div>
+                <div class="perk-text">
+                  <h4>Eco-Friendly Circular Economy</h4>
+                  <p>Keep educational resources in active circulation, cutting costs and waste semester after semester.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-lg); padding: 2rem; display: flex; flex-direction: column; gap: 1.5rem;">
+            <h3 style="color: #ffffff; font-size: 1.25rem;">Campus Safety Code</h3>
+            <ul style="color: #cbd5e1; font-size: 0.9rem; list-style: none; display: flex; flex-direction: column; gap: 0.85rem;">
+              <li style="display: flex; gap: 0.5rem;">
+                <span style="color: #60a5fa;">📍</span>
+                <span>Always meet in well-lit public campus spaces (e.g. Library foyer, Student Center).</span>
+              </li>
+              <li style="display: flex; gap: 0.5rem;">
+                <span style="color: #60a5fa;">🔍</span>
+                <span>Inspect items thoroughly in person before concluding any payment or exchange.</span>
+              </li>
+              <li style="display: flex; gap: 0.5rem;">
+                <span style="color: #60a5fa;">💳</span>
+                <span>Use direct UPI/cash upon handover—never send advance deposits to strangers.</span>
+              </li>
+            </ul>
+            <div style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 1rem;">
+              <span class="badge badge-accent">CS3911 Startup Practicum 3 Verified Architecture</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to Action Banner -->
+    <section class="cta-banner">
+      <div class="container">
+        <div class="cta-box">
+          <h2>Declutter Your Dorm. Earn Cash.</h2>
+          <p>Don't let past semester textbooks or unused electronics sit around collecting dust. Help a junior student and get paid today.</p>
+          <div class="cta-actions">
+            <button class="btn btn-secondary btn-lg action-sell-btn">Post a Free Listing</button>
+            <a href="#featured-listings" class="btn btn-ghost btn-lg" style="color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.3);">Browse What's Available</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Product Detail & Contact Modal -->
+  <div class="modal-overlay" id="product-modal-overlay">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 style="font-size: 1.1rem; color: var(--secondary);">Item Preview</h3>
+        <button class="modal-close-btn" id="modal-close-btn" aria-label="Close dialog">&times;</button>
+      </div>
+      <div class="modal-body" id="modal-body-content">
+        <!-- Injected via JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        
+        <div class="footer-brand">
+          <div class="brand-logo" style="color: #ffffff; margin-bottom: 0.75rem;">
+            <div class="logo-icon">🛒</div>
+            <span>CampusCart</span>
+          </div>
+          <p>Your Campus. Your Marketplace. Connecting university students to buy, sell, and exchange essentials safely within their campus community.</p>
+          <div class="team-pill">
+            <strong>Project Leadership</strong>
+            Deep Ranjan Paul (1RUA24SCSOO30) – Tech Lead<br>
+            Yuvrat Mittal (1rua24cse0552) – Product & Dev Lead
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Marketplace</h4>
+          <ul>
+            <li><a href="#categories">All Categories</a></li>
+            <li><a href="#featured-listings">Textbooks & Notes</a></li>
+            <li><a href="#featured-listings">Electronics & Gadgets</a></li>
+            <li><a href="#featured-listings">Calculators & Stationery</a></li>
+            <li><a href="#featured-listings">Hostel Furniture</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Safety & Trust</h4>
+          <ul>
+            <li><a href="#how-it-works">How It Works</a></li>
+            <li><a href="#trust">Safety Guidelines</a></li>
+            <li><a href="#trust">Campus Meetup Spots</a></li>
+            <li><a href="#featured-listings">Verification Process</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Project Information</h4>
+          <ul>
+            <li><a href="#">Course: CS3911 Startup Practicum 3</a></li>
+            <li><a href="#">Architecture: Vanilla JS + Serverless</a></li>
+            <li><a href="#">Database: MongoDB Atlas</a></li>
+            <li><a href="https://github.com/drp369-369/CAMPUSCARTT" target="_blank" rel="noopener">GitHub Repository</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 CampusCart. CS3911 Startup Practicum 3. All rights reserved.</div>
+        <div>Designed with minimal, modern commercial e-commerce aesthetics for college campuses.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/js/config.js"></script>
+  <script src="/js/main.js"></script>
+</body>
+</html>
