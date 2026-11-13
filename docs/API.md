@@ -440,3 +440,4 @@ Retrieves reports. Students receive only reports they filed; admins receive all 
 | `422 Unprocessable Entity`| Validation failure | Password too short, invalid category/condition |
 | `500 Server Error` | Unhandled error | Unexpected server exception |
 | `503 Service Unavailable`| Database unavailable | `MONGODB_URI` not set or Atlas network blocked |
+

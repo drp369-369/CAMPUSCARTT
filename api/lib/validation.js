@@ -215,3 +215,4 @@ module.exports = {
   ALLOWED_CONDITIONS,
   ALLOWED_REPORT_REASONS
 };
+

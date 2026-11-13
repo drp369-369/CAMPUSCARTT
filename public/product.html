@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details – CampusCart</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛒</text></svg>">
+  <style>
+    .product-page-section {
+      padding: 3rem 0;
+    }
+    .product-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+    .product-gallery {
+      position: sticky;
+      top: 100px;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      height: 440px;
+      position: relative;
+    }
+    .product-gallery img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .detail-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 2.25rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .seller-profile-card {
+      background: var(--bg-body);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      margin-bottom: 1.75rem;
+    }
+    .product-action-grid {
+      display: grid;
+      grid-template-columns: 1.8fr 1.4fr 1fr;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+    @media (max-width: 900px) {
+      .product-layout {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .product-gallery {
+        position: static;
+        height: 320px;
+      }
+      .product-action-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Sticky Header -->
+  <header class="site-header">
+    <div class="container nav-container">
+      <a href="/" class="brand-logo" aria-label="CampusCart Home">
+        <div class="logo-icon">🛒</div>
+        <span>CampusCart</span>
+      </a>
+      <div class="nav-actions">
+        <!-- Rendered by auth.js -->
+        <a href="/login.html" class="btn btn-ghost action-login-btn">Sign In</a>
+        <a href="/sell.html" class="btn btn-primary action-sell-btn">+ Sell Item</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="product-page-section">
+    <div class="container">
+      
+      <!-- Breadcrumb -->
+      <nav style="margin-bottom: 1.5rem; font-size: 0.875rem; color: var(--text-muted);" aria-label="Breadcrumb">
+        <a href="/" style="color: var(--primary);">Home</a> &gt; 
+        <a href="/explore.html" style="color: var(--primary);">Explore</a> &gt; 
+        <span id="breadcrumb-title">Product Details</span>
+      </nav>
+
+      <div id="product-container">
+        <!-- Injected via JavaScript -->
+        <div style="text-align: center; padding: 4rem; color: var(--text-muted);">
+          Loading product details...
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>&copy; 2026 CampusCart. CS3911 Startup Practicum 3.</div>
+        <div>Deep Ranjan Paul & Yuvrat Mittal</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/config.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/theme.js"></script>
+  <script src="/js/toast.js"></script>
+  <script src="/js/wishlist.js"></script>
+  <script src="/js/chat.js"></script>
+  <script src="/js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const container = document.getElementById('product-container');
+      const breadcrumb = document.getElementById('breadcrumb-title');
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
+
+      if (!id) {
+        container.innerHTML = `
+          <div style="text-align: center; padding: 4rem 1.5rem; background: var(--bg-surface); border: 1px dashed var(--border); border-radius: var(--radius-xl);">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">🔍</div>
+            <h2 style="font-size: 1.5rem; color: var(--secondary); margin-bottom: 0.5rem;">No Product Selected</h2>
+            <p style="margin-bottom: 1.5rem; color: var(--text-muted);">Please pick an item from our campus marketplace to view its verified listing details.</p>
+            <a href="/explore.html" class="btn btn-primary">Browse Marketplace</a>
+          </div>
+        `;
+        return;
+      }
+
+      let product = null;
+
+      try {
+        const res = await window.CampusCartAPI.get(`/products?id=${id}`);
+        if (res && res.data) {
+          product = res.data;
+        }
+      } catch (err) {
+        // Fallback to seed catalog if database is not reachable
+        product = window.CampusCartConfig.seedProducts.find(p => (p.id || p._id) === id);
+      }
+
+      if (!product) {
+        container.innerHTML = `
+          <div style="text-align: center; padding: 4rem 1.5rem; background: var(--bg-surface); border: 1px dashed var(--border); border-radius: var(--radius-xl);">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">📦</div>
+            <h2 style="font-size: 1.5rem; color: var(--secondary); margin-bottom: 0.5rem;">Listing Not Found</h2>
+            <p style="margin-bottom: 1.5rem; color: var(--text-muted);">This listing may have been marked as sold, expired or removed by the seller.</p>
+            <a href="/explore.html" class="btn btn-primary">Back to Campus Marketplace</a>
+          </div>
+        `;
+        return;
+      }
+
+      const prodId = product.id || product._id || id;
+      breadcrumb.textContent = product.title;
+      document.title = `${product.title} – CampusCart`;
+
+      const discount = product.originalPrice 
+        ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100) 
+        : 0;
+      const sellerName = product.seller ? (product.seller.name || 'Verified Student') : 'Verified Student';
+      const sellerAvatar = sellerName.split(' ').map(n=>n[0]).join('').substring(0, 2).toUpperCase();
+      const isSaved = window.CampusCartWishlist ? window.CampusCartWishlist.isSaved(prodId) : false;
+
+      container.innerHTML = `
+        <div class="product-layout">
+          <div class="product-gallery">
+            <img src="${product.imageUrl || product.image || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c'}" alt="${escapeHtml(product.title)}">
+          </div>
+
+          <div>
+            <div class="detail-card">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
+                <span style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--primary); letter-spacing: 0.05em;">
+                  ${escapeHtml(product.category)}
+                </span>
+                <span class="badge badge-accent">${escapeHtml(product.condition || 'Gently Used')} Condition</span>
+              </div>
+
+              <h1 style="font-size: 2.1rem; color: var(--secondary); margin-bottom: 1rem; line-height: 1.25;">
+                ${escapeHtml(product.title)}
+              </h1>
+
+              <div style="display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1.75rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+                <span style="font-size: 2.3rem; font-weight: 800; font-family: var(--font-heading); color: var(--secondary);">
+                  ₹${product.price}
+                </span>
+                ${product.originalPrice ? `<span style="font-size: 1.15rem; text-decoration: line-through; color: var(--text-light);">₹${product.originalPrice}</span>` : ''}
+                ${discount > 0 ? `<span class="badge badge-accent" style="font-size: 0.85rem;">Save ${discount}%</span>` : ''}
+                <span class="badge badge-neutral" style="margin-left: auto;">In Stock (1 Available)</span>
+              </div>
+
+              <div style="margin-bottom: 1.75rem;">
+                <h3 style="font-size: 1.05rem; color: var(--secondary); margin-bottom: 0.6rem;">Item Description</h3>
+                <p style="color: var(--text-muted); line-height: 1.65; font-size: 0.95rem; white-space: pre-line;">
+                  ${escapeHtml(product.description)}
+                </p>
+              </div>
+
+              <!-- Seller Profile Card -->
+              <div class="seller-profile-card">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
+                  <div style="display: flex; align-items: center; gap: 0.85rem;">
+                    <div style="width: 46px; height: 46px; border-radius: 50%; background: linear-gradient(135deg, #2563eb, #1d4ed8); color: #fff; font-weight: 800; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; box-shadow: 0 4px 10px var(--primary-glow);">
+                      ${sellerAvatar}
+                    </div>
+                    <div>
+                      <div style="font-weight: 700; color: var(--secondary); font-size: 1.05rem;">${escapeHtml(sellerName)}</div>
+                      <div style="font-size: 0.8rem; color: var(--accent); font-weight: 600;">✓ Verified Campus Student</div>
+                    </div>
+                  </div>
+                  <span class="badge badge-neutral">Campus Hostels</span>
+                </div>
+                <div style="font-size: 0.875rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.5rem;">
+                  <span>📍 Recommended Hand-off:</span>
+                  <strong style="color: var(--secondary);">${escapeHtml(product.location || 'Central Library Ground Floor')}</strong>
+                </div>
+              </div>
+
+              <!-- Student Actions -->
+              <div class="product-action-grid">
+                <button class="btn btn-primary btn-lg" id="contact-seller-btn">
+                  💬 Chat with Seller
+                </button>
+                <button class="btn btn-secondary btn-lg" id="make-offer-btn">
+                  🤝 Make an Offer
+                </button>
+                <button class="btn btn-secondary btn-lg" id="wishlist-btn">
+                  <span id="wishlist-heart-icon">${isSaved ? '❤️' : '🤍'}</span>
+                  <span id="wishlist-text">${isSaved ? 'Saved' : 'Save'}</span>
+                </button>
+              </div>
+
+              <div style="display: flex; justify-content: flex-end; margin-bottom: 1.5rem;">
+                <button class="btn btn-ghost btn-sm" id="report-item-btn" style="color: var(--text-light); font-size: 0.8rem;">
+                  🚩 Report listing
+                </button>
+              </div>
+
+              <!-- Campus Safety Standard Banner -->
+              <div style="background: var(--bg-subtle); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.15rem; font-size: 0.85rem; line-height: 1.5;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.4rem; flex-wrap: wrap; gap: 0.5rem;">
+                  <strong style="color: var(--primary); display: inline-flex; align-items: center; gap: 0.35rem;">
+                    🛡️ CampusCart Safe Hand-off Standard
+                  </strong>
+                  <a href="/meetup-spots.html" style="font-weight: 700; color: var(--primary); font-size: 0.8rem;">
+                    View Campus Safe Zones &rarr;
+                  </a>
+                </div>
+                <p style="margin: 0; color: var(--text-muted); font-size: 0.825rem;">
+                  Never transfer advance funds. Coordinate in daylight at high-traffic verified campus spots (Central Library, Student Cafeteria, or Main Gate) and physically verify item condition before direct payment.
+                </p>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Helper function for escaping HTML
+      function escapeHtml(text) {
+        if (!text) return '';
+        const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+        return String(text).replace(/[&<>"']/g, m => map[m]);
+      }
+
+      // Wire Chat with Seller
+      const chatBtn = document.getElementById('contact-seller-btn');
+      chatBtn.onclick = () => {
+        if (window.CampusCartChat) {
+          window.CampusCartChat.open(product);
+        } else {
+          window.location.href = `/login.html?redirect=${encodeURIComponent(window.location.pathname + window.location.search)}`;
+        }
+      };
+
+      // Wire Make an Offer
+      const offerBtn = document.getElementById('make-offer-btn');
+      offerBtn.onclick = () => {
+        if (window.CampusCartChat) {
+          window.CampusCartChat.promptOffer(product);
+        } else {
+          window.location.href = `/login.html?redirect=${encodeURIComponent(window.location.pathname + window.location.search)}`;
+        }
+      };
+
+      // Wire Wishlist Toggle
+      const wishBtn = document.getElementById('wishlist-btn');
+      const wishIcon = document.getElementById('wishlist-heart-icon');
+      const wishText = document.getElementById('wishlist-text');
+
+      wishBtn.onclick = () => {
+        if (window.CampusCartWishlist) {
+          const nowSaved = window.CampusCartWishlist.toggle(product);
+          wishIcon.textContent = nowSaved ? '❤️' : '🤍';
+          wishText.textContent = nowSaved ? 'Saved' : 'Save';
+        }
+      };
+
+      // Wire Report Listing
+      const reportBtn = document.getElementById('report-item-btn');
+      reportBtn.onclick = async () => {
+        if (!window.CampusCartAuth.isAuthenticated()) {
+          if (window.CampusCartToast) {
+            window.CampusCartToast.warning('Please sign in to report a listing.', 'Authentication Required');
+          } else {
+            alert('Please sign in to report a listing.');
+          }
+          window.location.href = `/login.html?redirect=${encodeURIComponent(window.location.pathname + window.location.search)}`;
+          return;
+        }
+
+        const reason = prompt('Why are you reporting this listing?\nOptions: inappropriate, scam, fake_listing, duplicate, prohibited_item, other');
+        if (reason) {
+          try {
+            await window.CampusCartAPI.post('/reports', {
+              productId: prodId,
+              reason: reason.trim().toLowerCase(),
+              details: 'Reported directly from product view'
+            });
+            if (window.CampusCartToast) {
+              window.CampusCartToast.success('Your report has been submitted to campus moderators for review.', 'Report Received');
+            } else {
+              alert('Thank you. Your report has been submitted.');
+            }
+          } catch (err) {
+            if (window.CampusCartToast) {
+              window.CampusCartToast.error(err.message || 'Unable to submit report at this time.', 'Report Failed');
+            } else {
+              alert('Report: ' + err.message);
+            }
+          }
+        }
+      };
+    });
+  </script>
+</body>
+</html>

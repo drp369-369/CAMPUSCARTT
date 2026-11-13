@@ -94,3 +94,4 @@ const handler = async (req, res) => {
 };
 
 module.exports = requireAuth(handler);
+

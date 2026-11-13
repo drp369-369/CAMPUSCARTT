@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Registration – CampusCart</title>
+  <meta name="description" content="Register your university student account on CampusCart to buy, sell, and exchange essentials.">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛒</text></svg>">
+  <style>
+    .auth-page-wrapper {
+      min-height: calc(100vh - var(--header-height));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 1.5rem;
+      background: radial-gradient(circle at 50% 10%, rgba(37, 99, 235, 0.08) 0%, rgba(248, 250, 252, 0) 60%);
+    }
+    .auth-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 2.5rem;
+      box-shadow: var(--shadow-xl);
+    }
+    .auth-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .auth-header h1 {
+      font-size: 1.85rem;
+      color: var(--secondary);
+      margin-bottom: 0.5rem;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+    .form-label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--secondary);
+      margin-bottom: 0.4rem;
+    }
+    .form-input, .form-select {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      font-size: 0.95rem;
+      font-family: var(--font-body);
+      color: var(--text-main);
+      background: var(--bg-surface);
+      transition: var(--transition);
+    }
+    .form-input:focus, .form-select:focus {
+      outline: none;
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px var(--primary-glow);
+    }
+    .alert-box {
+      display: none;
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-md);
+      font-size: 0.875rem;
+      margin-bottom: 1.25rem;
+      line-height: 1.4;
+    }
+    .alert-error {
+      background: #fef2f2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
+    .alert-success {
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+    }
+    @media (max-width: 600px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      .auth-card {
+        padding: 1.75rem 1.25rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky Header -->
+  <header class="site-header">
+    <div class="container nav-container">
+      <a href="/" class="brand-logo" aria-label="CampusCart Home">
+        <div class="logo-icon">🛒</div>
+        <span>CampusCart</span>
+        <span class="brand-badge">Campus</span>
+      </a>
+      <div class="nav-actions">
+        <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Dark/Light Mode">🌙</button>
+        <a href="/login.html" class="btn btn-ghost btn-sm">Already a member? Sign In</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="auth-page-wrapper">
+    <div class="auth-card">
+      <div class="auth-header">
+        <h1>Join Your Campus Marketplace</h1>
+        <p>Register using your college email to verify student status</p>
+      </div>
+
+      <div id="alert-box" class="alert-box" role="alert"></div>
+
+      <form id="register-form">
+        <div class="form-group">
+          <label class="form-label" for="name">Full Name *</label>
+          <input type="text" id="name" class="form-input" placeholder="e.g. Aarav Sharma" required minlength="2" maxlength="100">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="email">University Email *</label>
+          <input type="email" id="email" class="form-input" placeholder="e.g. aarav.s@student.rvu.edu.in" required>
+          <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.35rem;">
+            Use your official student email address for campus verification.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="password">Password *</label>
+          <input type="password" id="password" class="form-input" placeholder="Minimum 8 characters (letters + numbers)" required minlength="8">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="branch">Department / Branch</label>
+            <input type="text" id="branch" class="form-input" placeholder="e.g. CSE, ECE, B.Des">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="year">Year of Study</label>
+            <select id="year" class="form-select">
+              <option value="1st Year">1st Year</option>
+              <option value="2nd Year">2nd Year</option>
+              <option value="3rd Year" selected>3rd Year</option>
+              <option value="Final Year">Final Year</option>
+              <option value="Postgraduate">Postgraduate</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="hostelBlock">Campus / Hostel Location</label>
+            <input type="text" id="hostelBlock" class="form-input" placeholder="e.g. Block A, Day Scholar">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="phone">Phone / WhatsApp (Optional)</label>
+            <input type="tel" id="phone" class="form-input" placeholder="e.g. +91 98765 43210">
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="submit-btn" style="width: 100%; padding: 0.85rem; font-size: 1rem; margin-top: 0.75rem;">
+          Create Student Account
+        </button>
+      </form>
+
+      <div style="text-align: center; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border); font-size: 0.9rem; color: var(--text-muted);">
+        Already have a student account? <a href="/login.html" style="color: var(--primary); font-weight: 600;">Sign in here</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="/js/theme.js"></script>
+  <script src="/js/toast.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.CampusCartAuth.isAuthenticated()) {
+        window.location.href = '/dashboard.html';
+        return;
+      }
+
+      const form = document.getElementById('register-form');
+      const submitBtn = document.getElementById('submit-btn');
+      const alertBox = document.getElementById('alert-box');
+
+      function showAlert(msg, isError = true) {
+        alertBox.textContent = msg;
+        alertBox.className = `alert-box ${isError ? 'alert-error' : 'alert-success'}`;
+        alertBox.style.display = 'block';
+      }
+
+      function clearAlert() {
+        alertBox.style.display = 'none';
+      }
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        clearAlert();
+
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+        const branch = document.getElementById('branch').value.trim();
+        const year = document.getElementById('year').value;
+        const hostelBlock = document.getElementById('hostelBlock').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+
+        if (password.length < 8 || !/[A-Za-z]/.test(password) || !/[0-9]/.test(password)) {
+          showAlert('Password must be at least 8 characters long and contain both letters and numbers.');
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Registering student account...';
+
+        try {
+          const payload = {
+            name,
+            email,
+            password,
+            branch,
+            year,
+            hostelBlock,
+            phone
+          };
+
+          const res = await window.CampusCartAPI.post('/auth/register', payload);
+          if (res && res.data && res.data.token) {
+            window.CampusCartAuth.setSession(res.data.token, res.data.user);
+            if (window.CampusCartToast) {
+              window.CampusCartToast.success(`Welcome to CampusCart, ${res.data.user.name}!`, 'Account Created');
+            }
+            showAlert('Registration successful! Welcome to CampusCart.', false);
+            setTimeout(() => {
+              window.location.href = '/explore.html';
+            }, 600);
+          }
+        } catch (err) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Create Student Account';
+          const msg = (err.details && Array.isArray(err.details)) 
+            ? err.details.join(', ') 
+            : (err.message || 'Registration failed. Please try again.');
+          showAlert(msg);
+          if (window.CampusCartToast) {
+            window.CampusCartToast.error(msg, 'Registration Error');
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>

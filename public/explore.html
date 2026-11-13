@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explore Marketplace – CampusCart</title>
+  <meta name="description" content="Browse second-hand textbooks, electronics, calculators and dorm essentials listed by fellow university students.">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/home.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛒</text></svg>">
+  <style>
+    .explore-header {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+      padding: 2rem 0 1.5rem;
+    }
+    .explore-controls-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+    }
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .custom-select {
+      padding: 0.55rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--secondary);
+      background: #ffffff;
+      cursor: pointer;
+    }
+    .price-input {
+      width: 90px;
+      padding: 0.5rem 0.65rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      font-size: 0.85rem;
+    }
+    .skeleton-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      height: 320px;
+      animation: skeleton-pulse 1.5s infinite;
+    }
+    @keyframes skeleton-pulse {
+      0% { opacity: 0.6; }
+      50% { opacity: 0.3; }
+      100% { opacity: 0.6; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Sticky Header -->
+  <header class="site-header">
+    <div class="container nav-container">
+      <a href="/" class="brand-logo" aria-label="CampusCart Home">
+        <div class="logo-icon">🛒</div>
+        <span>CampusCart</span>
+        <span class="brand-badge">Explore</span>
+      </a>
+
+      <div class="header-search">
+        <div class="search-input-wrapper">
+          <input type="text" id="header-search-input" class="search-input" placeholder="Search textbooks, calculators, gear...">
+        </div>
+      </div>
+
+      <div class="nav-actions">
+        <!-- Rendered by auth.js -->
+        <a href="/login.html" class="btn btn-ghost action-login-btn">Sign In</a>
+        <a href="/sell.html" class="btn btn-primary action-sell-btn">+ Sell an Item</a>
+        <button class="mobile-nav-toggle" id="mobile-nav-toggle" aria-label="Open Navigation Menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer -->
+  <div class="mobile-nav-drawer" id="mobile-drawer">
+    <div class="drawer-header">
+      <div class="brand-logo">
+        <div class="logo-icon">🛒</div>
+        <span>CampusCart</span>
+      </div>
+      <button id="close-drawer-btn" style="background:none; border:none; font-size:1.5rem; cursor:pointer;">&times;</button>
+    </div>
+    <ul class="drawer-links">
+      <li><a href="/explore.html">Browse Marketplace</a></li>
+      <li><a href="/sell.html">+ Post an Item</a></li>
+      <li><a href="/dashboard.html">My Dashboard</a></li>
+      <li><a href="/">CampusCart Home</a></li>
+    </ul>
+    <div class="drawer-actions" style="margin-top: auto; display: flex; flex-direction: column; gap: 0.75rem;">
+      <a href="/login.html" class="btn btn-secondary" style="width:100%; text-align: center;">Sign In</a>
+    </div>
+  </div>
+
+  <!-- Page Header & Filters -->
+  <section class="explore-header">
+    <div class="container">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h1 style="font-size: 2rem; color: var(--secondary); margin-bottom: 0.35rem;">Campus Marketplace</h1>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">Find academic essentials and dorm necessities directly from students on campus</p>
+        </div>
+        <a href="/sell.html" class="btn btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          <span>List an Item for Sale</span>
+        </a>
+      </div>
+
+      <!-- Controls & Filter Bar -->
+      <div class="explore-controls-bar">
+        <div class="filter-tabs" id="category-pills" style="margin-bottom: 0;">
+          <button class="filter-tab active" data-cat="all">All Categories</button>
+          <button class="filter-tab" data-cat="textbooks">📚 Textbooks</button>
+          <button class="filter-tab" data-cat="electronics">💻 Electronics</button>
+          <button class="filter-tab" data-cat="stationery">📐 Calculators & Stationery</button>
+          <button class="filter-tab" data-cat="hostel">🛏️ Hostel & Dorm</button>
+          <button class="filter-tab" data-cat="other">🎒 Other Essentials</button>
+        </div>
+
+        <div class="filter-group">
+          <div style="display: flex; align-items: center; gap: 0.35rem; font-size: 0.85rem; color: var(--text-muted);">
+            <span>Price: ₹</span>
+            <input type="number" id="min-price-input" class="price-input" placeholder="Min" min="0">
+            <span>- ₹</span>
+            <input type="number" id="max-price-input" class="price-input" placeholder="Max" min="0">
+            <button class="btn btn-secondary btn-sm" id="apply-price-btn">Apply</button>
+          </div>
+
+          <select id="sort-select" class="custom-select" aria-label="Sort products">
+            <option value="newest">Sort: Newest First</option>
+            <option value="price_asc">Price: Low to High</option>
+            <option value="price_desc">Price: High to Low</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Marketplace Listings Grid -->
+  <main class="listings-section" style="padding-top: 2rem;">
+    <div class="container">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <div style="font-size: 0.9rem; color: var(--text-muted);" id="results-count-text">
+          Loading active listings...
+        </div>
+        <button class="btn btn-ghost btn-sm" id="reset-all-filters-btn" style="display: none;">
+          Clear All Filters
+        </button>
+      </div>
+
+      <!-- Products Grid -->
+      <div class="products-grid" id="explore-grid">
+        <!-- Rendered dynamically -->
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Product Detail Modal -->
+  <div class="modal-overlay" id="product-modal-overlay">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 style="font-size: 1.1rem; color: var(--secondary);">Item Preview</h3>
+        <button class="modal-close-btn" id="modal-close-btn">&times;</button>
+      </div>
+      <div class="modal-body" id="modal-body-content"></div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>&copy; 2026 CampusCart. CS3911 Startup Practicum 3.</div>
+        <div>Deep Ranjan Paul (Tech Lead) & Yuvrat Mittal (Product Lead)</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/config.js"></script>
+  <script src="/js/theme.js"></script>
+  <script src="/js/toast.js"></script>
+  <script src="/js/wishlist.js"></script>
+  <script src="/js/chat.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      let currentCategory = 'all';
+      let currentSort = 'newest';
+      let currentSearch = '';
+      let minPrice = null;
+      let maxPrice = null;
+      let allProducts = [];
+
+      const grid = document.getElementById('explore-grid');
+      const resultsText = document.getElementById('results-count-text');
+      const resetBtn = document.getElementById('reset-all-filters-btn');
+      const headerSearch = document.getElementById('header-search-input');
+      const sortSelect = document.getElementById('sort-select');
+      const minPriceInput = document.getElementById('min-price-input');
+      const maxPriceInput = document.getElementById('max-price-input');
+      const applyPriceBtn = document.getElementById('apply-price-btn');
+      const modalOverlay = document.getElementById('product-modal-overlay');
+      const modalClose = document.getElementById('modal-close-btn');
+      const modalBody = document.getElementById('modal-body-content');
+
+      // Check URL query parameters for pre-selected category or search
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('category')) currentCategory = params.get('category').toLowerCase();
+      if (params.get('q')) {
+        currentSearch = params.get('q');
+        if (headerSearch) headerSearch.value = currentSearch;
+      }
+
+      // Sync category pills
+      document.querySelectorAll('#category-pills .filter-tab').forEach(btn => {
+        if (btn.getAttribute('data-cat') === currentCategory) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('#category-pills .filter-tab').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentCategory = btn.getAttribute('data-cat');
+          loadProducts();
+        });
+      });
+
+      async function loadProducts() {
+        grid.innerHTML = `
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+        `;
+
+        try {
+          // Fetch live products from backend API
+          const queryParams = {
+            category: currentCategory !== 'all' ? currentCategory : undefined,
+            q: currentSearch || undefined,
+            minPrice: minPrice || undefined,
+            maxPrice: maxPrice || undefined,
+            sort: currentSort
+          };
+
+          const res = await window.CampusCartAPI.get('/products', queryParams);
+          if (res && res.data && Array.isArray(res.data.products)) {
+            allProducts = res.data.products;
+          } else {
+            allProducts = [];
+          }
+        } catch (err) {
+          // Fallback gracefully to seed items if database is in initialization
+          console.log('[Notice] Using configured campus seed listings:', err.message);
+          allProducts = window.CampusCartConfig.seedProducts.filter(item => {
+            const matchCat = currentCategory === 'all' || item.category === currentCategory;
+            const matchQuery = !currentSearch || item.title.toLowerCase().includes(currentSearch.toLowerCase()) || item.description.toLowerCase().includes(currentSearch.toLowerCase());
+            const matchMin = !minPrice || item.price >= minPrice;
+            const matchMax = !maxPrice || item.price <= maxPrice;
+            return matchCat && matchQuery && matchMin && matchMax;
+          });
+
+          if (currentSort === 'price_asc') allProducts.sort((a,b) => a.price - b.price);
+          else if (currentSort === 'price_desc') allProducts.sort((a,b) => b.price - a.price);
+        }
+
+        renderGrid();
+      }
+
+      function renderGrid() {
+        const hasFilters = currentCategory !== 'all' || currentSearch || minPrice || maxPrice;
+        resetBtn.style.display = hasFilters ? 'inline-block' : 'none';
+
+        resultsText.textContent = `Showing ${allProducts.length} campus item${allProducts.length === 1 ? '' : 's'}`;
+
+        if (allProducts.length === 0) {
+          grid.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 4rem 1.5rem; background: #fff; border: 1px dashed var(--border); border-radius: var(--radius-xl);">
+              <div style="font-size: 3rem; margin-bottom: 1rem;">🔍</div>
+              <h3 style="font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--secondary);">No listings matched your filters</h3>
+              <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Try clearing your price range or search terms, or be the first to post this item!</p>
+              <div style="display: flex; justify-content: center; gap: 0.75rem;">
+                <button class="btn btn-secondary" id="empty-reset-btn">Reset Filters</button>
+                <a href="/sell.html" class="btn btn-primary">+ Post a Listing</a>
+              </div>
+            </div>
+          `;
+          const emptyReset = document.getElementById('empty-reset-btn');
+          if (emptyReset) emptyReset.onclick = resetFilters;
+          return;
+        }
+
+        grid.innerHTML = allProducts.map(p => {
+          const discount = p.originalPrice 
+            ? Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100) 
+            : 0;
+          const sellerName = p.seller ? p.seller.name : 'Verified Student';
+          const sellerAvatar = sellerName.split(' ').map(n=>n[0]).join('').substring(0, 2).toUpperCase();
+          const prodId = p.id || p._id;
+          const isFavorited = window.CampusCartWishlist && window.CampusCartWishlist.isSaved(prodId);
+
+          return `
+            <article class="product-card" data-id="${prodId}">
+              <div class="card-image-box">
+                <button class="wishlist-btn ${isFavorited ? 'active' : ''}" data-wishlist-id="${prodId}" title="Save item" aria-label="Save to wishlist">
+                  ${isFavorited ? '❤️' : '🤍'}
+                </button>
+                <span class="card-badge">${escapeHtml(p.location || 'Campus')}</span>
+                <span class="card-condition-badge">${escapeHtml(p.condition || 'Good')}</span>
+                <img src="${p.imageUrl || p.image || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c'}" alt="${escapeHtml(p.title)}" loading="lazy">
+              </div>
+              <div class="card-content">
+                <div class="card-category">${escapeHtml(p.category)}</div>
+                <h3 class="card-title" title="${escapeHtml(p.title)}">${escapeHtml(p.title)}</h3>
+                <div class="card-price-row">
+                  <span class="current-price">₹${p.price}</span>
+                  ${p.originalPrice ? `<span class="original-price">₹${p.originalPrice}</span>` : ''}
+                  ${discount > 0 ? `<span class="discount-tag">${discount}% OFF</span>` : ''}
+                </div>
+                <div class="card-footer">
+                  <div class="seller-info">
+                    <div class="seller-avatar">${sellerAvatar}</div>
+                    <span>${escapeHtml(sellerName)}</span>
+                  </div>
+                  <span class="badge badge-accent">Verified</span>
+                </div>
+              </div>
+            </article>
+          `;
+        }).join('');
+
+        // Wishlist button click handling
+        grid.querySelectorAll('.wishlist-btn').forEach(btn => {
+          btn.onclick = (e) => {
+            e.stopPropagation();
+            const id = btn.getAttribute('data-wishlist-id');
+            const item = allProducts.find(p => (p.id || p._id) === id);
+            if (item && window.CampusCartWishlist) {
+              const nowSaved = window.CampusCartWishlist.toggle(item);
+              btn.classList.toggle('active', nowSaved);
+              btn.innerHTML = nowSaved ? '❤️' : '🤍';
+            }
+          };
+        });
+
+        // Card clicks open product detail modal
+        grid.querySelectorAll('.product-card').forEach(card => {
+          card.onclick = () => {
+            const id = card.getAttribute('data-id');
+            openDetailModal(id);
+          };
+        });
+      }
+
+      function openDetailModal(id) {
+        const item = allProducts.find(p => (p.id || p._id) === id);
+        if (!item) return;
+
+        const discount = item.originalPrice 
+          ? Math.round(((item.originalPrice - item.price) / item.originalPrice) * 100) 
+          : 0;
+        const sellerName = item.seller ? item.seller.name : 'Student Seller';
+        const sellerAvatar = sellerName.split(' ').map(n=>n[0]).join('').substring(0, 2).toUpperCase();
+
+        modalBody.innerHTML = `
+          <div>
+            <div style="border-radius: var(--radius-lg); overflow: hidden; height: 260px; background: #e2e8f0; margin-bottom: 1.25rem;">
+              <img src="${item.imageUrl || item.image}" alt="${escapeHtml(item.title)}" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--primary); margin-bottom: 0.25rem;">
+              ${escapeHtml(item.category)}
+            </div>
+            <h2 style="font-size: 1.4rem; color: var(--secondary); margin-bottom: 0.5rem;">
+              ${escapeHtml(item.title)}
+            </h2>
+            <div style="display: flex; align-items: baseline; gap: 0.75rem; margin-bottom: 1rem;">
+              <span style="font-size: 1.6rem; font-weight: 800; font-family: var(--font-heading); color: var(--secondary);">
+                ₹${item.price}
+              </span>
+              ${item.originalPrice ? `<span style="text-decoration: line-through; color: var(--text-light);">₹${item.originalPrice}</span>` : ''}
+              ${discount > 0 ? `<span style="background: var(--accent-light); color: var(--accent); font-weight: 700; font-size: 0.8rem; padding: 0.2rem 0.5rem; border-radius: 4px;">Save ${discount}%</span>` : ''}
+            </div>
+            <div style="background: var(--bg-body); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.25rem;">
+              <h4 style="font-size: 0.85rem; margin-bottom: 0.35rem; color: var(--secondary);">Description</h4>
+              <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5;">${escapeHtml(item.description)}</p>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.85rem 1rem; background: #fff; border: 1px solid var(--border); border-radius: var(--radius-md); margin-bottom: 1.25rem;">
+              <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <div style="width: 38px; height: 38px; border-radius: 50%; background: var(--primary-light); color: var(--primary); font-weight: 700; display: flex; align-items: center; justify-content: center;">
+                  ${sellerAvatar}
+                </div>
+                <div>
+                  <div style="font-weight: 700; font-size: 0.95rem; color: var(--secondary);">${escapeHtml(sellerName)}</div>
+                  <div style="font-size: 0.8rem; color: var(--accent); font-weight: 600;">Verified Student Seller</div>
+                </div>
+              </div>
+              <div style="font-size: 0.85rem; color: var(--text-muted); text-align: right;">
+                📍 ${escapeHtml(item.location || 'Campus')}
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1.2fr 1.2fr; gap: 0.5rem; margin-top: 1rem;">
+              <a href="/product.html?id=${item.id || item._id}" class="btn btn-secondary btn-sm" style="text-align: center;">View Page</a>
+              <button class="btn btn-secondary btn-sm" id="modal-offer-btn">🤝 Make Offer</button>
+              <button class="btn btn-primary btn-sm" id="modal-contact-btn">💬 Chat</button>
+            </div>
+          </div>
+        `;
+
+        modalOverlay.classList.add('active');
+
+        document.getElementById('modal-contact-btn').onclick = () => {
+          modalOverlay.classList.remove('active');
+          if (window.CampusCartChat) {
+            window.CampusCartChat.open(item);
+          }
+        };
+
+        const modalOfferBtn = document.getElementById('modal-offer-btn');
+        if (modalOfferBtn) {
+          modalOfferBtn.onclick = () => {
+            modalOverlay.classList.remove('active');
+            if (window.CampusCartChat) {
+              window.CampusCartChat.promptOffer(item);
+            }
+          };
+        }
+      }
+
+      modalClose.onclick = () => modalOverlay.classList.remove('active');
+      modalOverlay.onclick = (e) => { if (e.target === modalOverlay) modalOverlay.classList.remove('active'); };
+
+      // Filter Handlers
+      headerSearch.addEventListener('input', (e) => {
+        currentSearch = e.target.value.trim();
+        loadProducts();
+      });
+
+      sortSelect.addEventListener('change', (e) => {
+        currentSort = e.target.value;
+        loadProducts();
+      });
+
+      applyPriceBtn.addEventListener('click', () => {
+        minPrice = parseFloat(minPriceInput.value) || null;
+        maxPrice = parseFloat(maxPriceInput.value) || null;
+        loadProducts();
+      });
+
+      function resetFilters() {
+        currentCategory = 'all';
+        currentSearch = '';
+        minPrice = null;
+        maxPrice = null;
+        if (headerSearch) headerSearch.value = '';
+        if (minPriceInput) minPriceInput.value = '';
+        if (maxPriceInput) maxPriceInput.value = '';
+        document.querySelectorAll('#category-pills .filter-tab').forEach(b => {
+          b.classList.toggle('active', b.getAttribute('data-cat') === 'all');
+        });
+        loadProducts();
+      }
+
+      resetBtn.onclick = resetFilters;
+
+      // Initial load
+      loadProducts();
+    });
+  </script>
+</body>
+</html>

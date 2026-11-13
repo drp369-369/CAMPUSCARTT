@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Safe Campus Meetup Spots – CampusCart</title>
+  <meta name="description" content="Verified safe campus exchange and hand-off locations at university library, student cafeteria, and hostel desks.">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛒</text></svg>">
+  <style>
+    .spots-hero {
+      background: radial-gradient(circle at 50% 10%, rgba(37, 99, 235, 0.08) 0%, rgba(248, 250, 252, 0) 70%);
+      padding: 3.5rem 0 2.5rem;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+    .spots-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1.5rem;
+      margin: 2.5rem 0;
+    }
+    .spot-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 1.75rem;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+    }
+    .spot-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--primary);
+    }
+    .spot-icon-box {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-lg);
+      background: var(--primary-light);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .checklist-box {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #ffffff;
+      border-radius: var(--radius-xl);
+      padding: 2.5rem;
+      margin: 3rem 0;
+    }
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.85rem;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+      color: #cbd5e1;
+    }
+    .check-circle {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #10b981;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 800;
+      flex-shrink: 0;
+      margin-top: 0.15rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky Header -->
+  <header class="site-header">
+    <div class="container nav-container">
+      <a href="/" class="brand-logo" aria-label="CampusCart Home">
+        <div class="logo-icon">🛒</div>
+        <span>CampusCart</span>
+        <span class="brand-badge">Safety</span>
+      </a>
+
+      <nav aria-label="Primary Navigation">
+        <ul class="nav-links">
+          <li><a href="/explore.html" class="nav-link">Marketplace</a></li>
+          <li><a href="/meetup-spots.html" class="nav-link active">Meetup Spots</a></li>
+          <li><a href="/#how-it-works" class="nav-link">How It Works</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <!-- Rendered by auth.js -->
+        <a href="/login.html" class="btn btn-ghost action-login-btn">Sign In</a>
+        <a href="/sell.html" class="btn btn-primary action-sell-btn">+ Sell an Item</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="spots-hero">
+      <div class="container" style="max-width: 760px;">
+        <span class="badge badge-accent" style="margin-bottom: 0.75rem;">100% On-Campus Hand-offs</span>
+        <h1 style="font-size: 2.5rem; color: var(--secondary); margin-bottom: 0.75rem; letter-spacing: -0.02em;">
+          Verified Campus Exchange Spots
+        </h1>
+        <p style="font-size: 1.05rem; color: var(--text-muted); line-height: 1.6;">
+          CampusCart was built to eliminate risky off-campus stranger meetings. Complete all exchanges safely at these official, high-traffic university landmarks with CCTV and security presence.
+        </p>
+      </div>
+    </section>
+
+    <div class="container">
+      <div class="spots-grid">
+        
+        <!-- Spot 1 -->
+        <div class="spot-card">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div class="spot-icon-box">🏛️</div>
+            <span class="badge badge-accent">Safety 10/10</span>
+          </div>
+          <h3 style="font-size: 1.25rem; color: var(--secondary); margin-bottom: 0.35rem;">Central University Library</h3>
+          <div style="font-size: 0.8rem; font-weight: 700; color: var(--primary); text-transform: uppercase; margin-bottom: 0.75rem;">Ground Floor Foyer &amp; Study Tables</div>
+          <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; margin-bottom: 1.25rem;">
+            The gold standard for textbook and notes exchanges. Plenty of natural light, security guards at the turnstiles, and study tables to inspect pages and bindings thoroughly.
+          </p>
+          <div style="margin-top: auto; font-size: 0.825rem; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 0.85rem;">
+            🕒 <strong>Recommended Hours:</strong> Mon - Sat: 9:00 AM – 8:00 PM
+          </div>
+        </div>
+
+        <!-- Spot 2 -->
+        <div class="spot-card">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div class="spot-icon-box" style="background: #ecfdf5; color: #059669;">☕</div>
+            <span class="badge badge-accent">Safety 9.8/10</span>
+          </div>
+          <h3 style="font-size: 1.25rem; color: var(--secondary); margin-bottom: 0.35rem;">Student Cafeteria &amp; Quad</h3>
+          <div style="font-size: 0.8rem; font-weight: 700; color: #059669; text-transform: uppercase; margin-bottom: 0.75rem;">Main Food Court Seating Area</div>
+          <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; margin-bottom: 1.25rem;">
+            Ideal for gadget and electronics testing (headphones, keyboards, calculators). High student footfall, ample seating, campus Wi-Fi, and power outlets for quick plug-in checks.
+          </p>
+          <div style="margin-top: auto; font-size: 0.825rem; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 0.85rem;">
+            🕒 <strong>Recommended Hours:</strong> Daily: 8:30 AM – 9:00 PM
+          </div>
+        </div>
+
+        <!-- Spot 3 -->
+        <div class="spot-card">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div class="spot-icon-box" style="background: #fef3c7; color: #b45309;">🚪</div>
+            <span class="badge badge-accent">Safety 10/10</span>
+          </div>
+          <h3 style="font-size: 1.25rem; color: var(--secondary); margin-bottom: 0.35rem;">Campus Main Security Gate</h3>
+          <div style="font-size: 0.8rem; font-weight: 700; color: #b45309; text-transform: uppercase; margin-bottom: 0.75rem;">Visitor Reception Lobby</div>
+          <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; margin-bottom: 1.25rem;">
+            The best hand-off point when trading between day-scholars and hostel residents who cannot enter campus dormitories. 24/7 guard presence and CCTV coverage.
+          </p>
+          <div style="margin-top: auto; font-size: 0.825rem; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 0.85rem;">
+            🕒 <strong>Recommended Hours:</strong> 24 Hours (Guards on Duty)
+          </div>
+        </div>
+
+        <!-- Spot 4 -->
+        <div class="spot-card">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div class="spot-icon-box" style="background: #f3e8ff; color: #7e22ce;">🛏️</div>
+            <span class="badge badge-accent">Safety 9.6/10</span>
+          </div>
+          <h3 style="font-size: 1.25rem; color: var(--secondary); margin-bottom: 0.35rem;">Hostel Reception Desks</h3>
+          <div style="font-size: 0.8rem; font-weight: 700; color: #7e22ce; text-transform: uppercase; margin-bottom: 0.75rem;">Block A, B &amp; C Common Foyers</div>
+          <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; margin-bottom: 1.25rem;">
+            Perfect for bulky dorm furniture, study tables, kettles, and laundry storage bins. Hand-off directly at the ground floor warden desk without having to carry furniture across campus.
+          </p>
+          <div style="margin-top: auto; font-size: 0.825rem; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 0.85rem;">
+            🕒 <strong>Recommended Hours:</strong> Daily: 8:00 AM – 10:00 PM
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Campus Safety Code Checklist -->
+      <div class="checklist-box">
+        <h2 style="font-size: 1.75rem; color: #ffffff; margin-bottom: 0.75rem;">The CampusCart Safe Exchange Code</h2>
+        <p style="color: #94a3b8; font-size: 0.95rem; margin-bottom: 1.75rem;">Always follow these 4 simple university trading principles to protect yourself and your peers:</p>
+
+        <div class="check-item">
+          <div class="check-circle">✓</div>
+          <div>
+            <strong style="color: #ffffff;">Always inspect in person before paying:</strong> Never send advance token deposits or UPI transfers to anyone before physically checking the textbook, calculator, or gadget.
+          </div>
+        </div>
+
+        <div class="check-item">
+          <div class="check-circle">✓</div>
+          <div>
+            <strong style="color: #ffffff;">Stick to designated public spots:</strong> Never agree to meet at isolated parking lots or off-campus alleyways. The library or cafeteria are always within a 5-minute walk.
+          </div>
+        </div>
+
+        <div class="check-item">
+          <div class="check-circle">✓</div>
+          <div>
+            <strong style="color: #ffffff;">Verify student status:</strong> Both parties can verify student ID cards upon meeting for 100% peace of mind.
+          </div>
+        </div>
+
+        <div class="check-item">
+          <div class="check-circle">✓</div>
+          <div>
+            <strong style="color: #ffffff;">Use direct instant payment:</strong> Complete payment via Google Pay, PhonePe, Paytm or cash on the spot right after inspecting and accepting the item.
+          </div>
+        </div>
+
+        <div style="margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+          <a href="/explore.html" class="btn btn-primary btn-lg">Browse Verified Listings</a>
+          <a href="/sell.html" class="btn btn-secondary btn-lg" style="color: #0f172a;">Post a Free Listing</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>&copy; 2026 CampusCart. CS3911 Startup Practicum 3.</div>
+        <div>Deep Ranjan Paul &amp; Yuvrat Mittal</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/theme.js"></script>
+  <script src="/js/toast.js"></script>
+  <script src="/js/wishlist.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+</body>
+</html>

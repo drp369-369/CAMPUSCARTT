@@ -17,3 +17,4 @@ module.exports = async (req, res) => {
 
   return sendSuccess(res, null, 'Logged out successfully');
 };
+

@@ -68,22 +68,22 @@ document.addEventListener('DOMContentLoaded', () => {
       const matchQuery = !searchQuery || 
         item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.location.toLowerCase().includes(searchQuery.toLowerCase());
+        (item.location && item.location.toLowerCase().includes(searchQuery.toLowerCase()));
       return matchCategory && matchQuery;
     });
   }
 
-  // Render Product Cards
+  // Render Product Cards with Wishlist heart buttons
   function renderProducts() {
     if (!productsGrid) return;
     const items = getFilteredProducts();
 
     if (items.length === 0) {
       productsGrid.innerHTML = `
-        <div style="grid-column: 1 / -1; text-align: center; padding: 4rem 1rem; background: #ffffff; border: 1px dashed var(--border); border-radius: var(--radius-xl);">
+        <div style="grid-column: 1 / -1; text-align: center; padding: 4rem 1rem; background: var(--bg-surface); border: 1px dashed var(--border); border-radius: var(--radius-xl);">
           <div style="font-size: 3rem; margin-bottom: 1rem;">🔍</div>
-          <h3 style="font-size: 1.3rem; margin-bottom: 0.5rem;">No campus listings found</h3>
-          <p style="margin-bottom: 1.5rem;">Try adjusting your search terms or view all categories.</p>
+          <h3 style="font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--secondary);">No campus listings found</h3>
+          <p style="margin-bottom: 1.5rem; color: var(--text-muted);">Try adjusting your search terms or view all categories.</p>
           <button class="btn btn-secondary" id="reset-filters-btn">Clear Filters</button>
         </div>
       `;
@@ -105,12 +105,18 @@ document.addEventListener('DOMContentLoaded', () => {
       const discount = product.originalPrice 
         ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100) 
         : 0;
+      const isSaved = window.CampusCartWishlist ? window.CampusCartWishlist.isSaved(product.id) : false;
 
       return `
         <article class="product-card" data-id="${product.id}">
           <div class="card-image-box">
-            <span class="card-badge">${escapeHtml(product.location)}</span>
-            <span class="card-condition-badge">${escapeHtml(product.condition)}</span>
+            <span class="card-badge">${escapeHtml(product.location || 'Campus')}</span>
+            <span class="card-condition-badge">${escapeHtml(product.condition || 'Used')}</span>
+            <button class="wishlist-btn ${isSaved ? 'active' : ''}" data-id="${product.id}" aria-label="Save to Wishlist" onclick="event.stopPropagation();">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="${isSaved ? '#ef4444' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+              </svg>
+            </button>
             <img src="${product.image}" alt="${escapeHtml(product.title)}" loading="lazy">
           </div>
           <div class="card-content">
@@ -123,10 +129,10 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
             <div class="card-footer">
               <div class="seller-info">
-                <div class="seller-avatar">${product.seller.avatar}</div>
-                <span>${escapeHtml(product.seller.name)}</span>
+                <div class="seller-avatar">${product.seller ? product.seller.avatar : 'ST'}</div>
+                <span>${escapeHtml(product.seller ? product.seller.name : 'Student')}</span>
               </div>
-              <span class="posted-time">${escapeHtml(product.postedAgo)}</span>
+              <span class="posted-time">${escapeHtml(product.postedAgo || 'Recent')}</span>
             </div>
           </div>
         </article>
@@ -138,6 +144,21 @@ document.addEventListener('DOMContentLoaded', () => {
       card.addEventListener('click', () => {
         const id = card.getAttribute('data-id');
         openProductModal(id);
+      });
+    });
+
+    // Attach wishlist button handlers
+    productsGrid.querySelectorAll('.wishlist-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const id = btn.getAttribute('data-id');
+        const product = config.seedProducts.find(p => p.id === id);
+        if (product && window.CampusCartWishlist) {
+          const nowSaved = window.CampusCartWishlist.toggle(product);
+          btn.classList.toggle('active', nowSaved);
+          const svg = btn.querySelector('svg');
+          if (svg) svg.setAttribute('fill', nowSaved ? '#ef4444' : 'none');
+        }
       });
     });
   }
@@ -164,7 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     modalBody.innerHTML = `
       <div style="display: grid; grid-template-columns: 1fr; gap: 1.5rem;">
-        <div style="border-radius: var(--radius-lg); overflow: hidden; height: 260px; background: #e2e8f0; position: relative;">
+        <div style="border-radius: var(--radius-lg); overflow: hidden; height: 260px; background: var(--bg-subtle); position: relative;">
           <img src="${product.image}" alt="${escapeHtml(product.title)}" style="width: 100%; height: 100%; object-fit: cover;">
           <span style="position: absolute; top: 1rem; left: 1rem; background: rgba(15, 23, 42, 0.85); color: #fff; padding: 0.3rem 0.75rem; border-radius: var(--radius-full); font-size: 0.8rem; font-weight: 700;">
             ${escapeHtml(product.condition)} Condition
@@ -189,29 +210,34 @@ document.addEventListener('DOMContentLoaded', () => {
             <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5;">${escapeHtml(product.description)}</p>
           </div>
           
-          <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem; background: #ffffff; border: 1px solid var(--border); border-radius: var(--radius-md); margin-bottom: 1.5rem;">
+          <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem; background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius-md); margin-bottom: 1.5rem;">
             <div style="display: flex; align-items: center; gap: 0.75rem;">
               <div style="width: 42px; height: 42px; border-radius: 50%; background: var(--primary-light); color: var(--primary); font-weight: 800; display: flex; align-items: center; justify-content: center; font-size: 1rem;">
-                ${product.seller.avatar}
+                ${product.seller ? product.seller.avatar : 'ST'}
               </div>
               <div>
-                <div style="font-weight: 700; font-size: 0.95rem; color: var(--secondary);">${escapeHtml(product.seller.name)}</div>
-                <div style="font-size: 0.8rem; color: var(--text-muted);">${escapeHtml(product.seller.branch)} • <span style="color: var(--accent); font-weight: 600;">Verified Student</span></div>
+                <div style="font-weight: 700; font-size: 0.95rem; color: var(--secondary);">${escapeHtml(product.seller ? product.seller.name : 'Verified Student')}</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">${escapeHtml(product.seller ? product.seller.branch : 'Campus')} • <span style="color: var(--accent); font-weight: 600;">Verified Student</span></div>
               </div>
             </div>
             <div style="font-size: 0.8rem; color: var(--text-muted); text-align: right;">
-              <div>📍 ${escapeHtml(product.location)}</div>
-              <div>🕒 ${escapeHtml(product.postedAgo)}</div>
+              <div>📍 ${escapeHtml(product.location || 'Campus')}</div>
+              <div>🕒 ${escapeHtml(product.postedAgo || 'Recent')}</div>
             </div>
           </div>
 
-          <div style="display: flex; gap: 0.75rem;">
-            <button class="btn btn-primary" style="flex: 1;" id="modal-contact-seller-btn">
-              💬 Contact Seller
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
+            <button class="btn btn-primary" id="modal-contact-seller-btn">
+              💬 Chat with Seller
             </button>
-            <button class="btn btn-secondary" style="flex: 1;" id="modal-meetup-btn">
-              📍 Arrange Campus Meetup
+            <button class="btn btn-secondary" id="modal-offer-btn">
+              🤝 Make an Offer
             </button>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem;">
+            <a href="/product.html?id=${product.id}" style="font-size: 0.875rem; color: var(--primary); font-weight: 600;">Open Standalone Product Page &rarr;</a>
+            <a href="/meetup-spots.html" style="font-size: 0.825rem; color: var(--text-muted);">Campus Safe Spots 🛡️</a>
           </div>
         </div>
       </div>
@@ -222,14 +248,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const contactBtn = document.getElementById('modal-contact-seller-btn');
     if (contactBtn) {
       contactBtn.addEventListener('click', () => {
-        alert(`Direct chat with ${product.seller.name} (${product.seller.branch}) will open in Phase 2.\n\nMeetup location proposed: ${product.location}.`);
+        closeModal();
+        if (window.CampusCartChat) {
+          window.CampusCartChat.open(product);
+        } else {
+          window.location.href = `/login.html?redirect=/product.html?id=${product.id}`;
+        }
       });
     }
 
-    const meetupBtn = document.getElementById('modal-meetup-btn');
-    if (meetupBtn) {
-      meetupBtn.addEventListener('click', () => {
-        alert(`Safety Tip: Always arrange meetups at public campus spots like Central Library or Campus Cafeteria during daylight hours.`);
+    const offerBtn = document.getElementById('modal-offer-btn');
+    if (offerBtn) {
+      offerBtn.addEventListener('click', () => {
+        closeModal();
+        if (window.CampusCartChat) {
+          window.CampusCartChat.promptOffer(product);
+        } else {
+          window.location.href = `/login.html?redirect=/product.html?id=${product.id}`;
+        }
       });
     }
   }
@@ -263,56 +299,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Search event listeners
-  function executeSearch(query) {
-    searchQuery = query.trim();
-    renderProducts();
-    scrollToSection('featured-listings');
-  }
-
-  if (heroSearchBtn && heroSearchInput) {
-    heroSearchBtn.addEventListener('click', () => {
-      executeSearch(heroSearchInput.value);
-    });
-    heroSearchInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') executeSearch(heroSearchInput.value);
-    });
-  }
-
-  if (headerSearchInput) {
-    headerSearchInput.addEventListener('input', (e) => {
-      searchQuery = e.target.value.trim();
-      renderProducts();
-    });
-  }
-
   // Mobile Drawer Toggle
-  if (mobileToggle && mobileDrawer && closeDrawerBtn) {
+  if (mobileToggle && mobileDrawer) {
     mobileToggle.addEventListener('click', () => {
-      mobileDrawer.classList.add('open');
-    });
-    closeDrawerBtn.addEventListener('click', () => {
-      mobileDrawer.classList.remove('open');
-    });
-
-    // Close drawer when clicking any link inside the drawer
-    mobileDrawer.querySelectorAll('a, button').forEach(el => {
-      el.addEventListener('click', () => {
-        mobileDrawer.classList.remove('open');
-      });
-    });
-
-    // Close drawer when clicking outside
-    document.addEventListener('click', (e) => {
-      if (mobileDrawer.classList.contains('open') && 
-          !mobileDrawer.contains(e.target) && 
-          !mobileToggle.contains(e.target)) {
-        mobileDrawer.classList.remove('open');
-      }
+      mobileDrawer.classList.toggle('active');
+      document.body.style.overflow = mobileDrawer.classList.contains('active') ? 'hidden' : '';
     });
   }
 
-  // Smooth scroll utility
+  if (closeDrawerBtn && mobileDrawer) {
+    closeDrawerBtn.addEventListener('click', () => {
+      mobileDrawer.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+  }
+
+  // Smooth scroll helper
   function scrollToSection(id) {
     const el = document.getElementById(id);
     if (el) {
@@ -320,36 +322,37 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Action buttons
-  const sellBtns = document.querySelectorAll('.action-sell-btn');
-  sellBtns.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      alert('Listing creation is scheduled for the next phase. You will be able to upload photos, set price and post directly with your student ID!');
-    });
-  });
-
-  const loginBtns = document.querySelectorAll('.action-login-btn');
-  loginBtns.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      alert('Student Authentication & Registration will be connected in Phase 2.');
-    });
-  });
-
-  // Helper function to escape HTML
-  function escapeHtml(str) {
-    if (!str) return '';
-    return str.replace(/&/g, '&amp;')
-              .replace(/</g, '&lt;')
-              .replace(/>/g, '&gt;')
-              .replace(/"/g, '&quot;')
-              .replace(/'/g, '&#039;');
+  // Search input listeners
+  function handleSearch(query) {
+    searchQuery = query.trim();
+    renderProducts();
+    scrollToSection('featured-listings');
   }
 
-  // Initial Initialization
+  if (heroSearchBtn && heroSearchInput) {
+    heroSearchBtn.addEventListener('click', () => handleSearch(heroSearchInput.value));
+    heroSearchInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') handleSearch(heroSearchInput.value);
+    });
+    heroSearchInput.addEventListener('input', (e) => handleSearch(e.target.value));
+  }
+
+  if (headerSearchInput) {
+    headerSearchInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') handleSearch(headerSearchInput.value);
+    });
+    headerSearchInput.addEventListener('input', (e) => handleSearch(e.target.value));
+  }
+
+  // Helper function to escape HTML
+  function escapeHtml(text) {
+    if (!text) return '';
+    const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+    return String(text).replace(/[&<>"']/g, m => map[m]);
+  }
+
+  // Initial UI Render
   renderCategories();
   renderFilterTabs();
   renderProducts();
 });
-

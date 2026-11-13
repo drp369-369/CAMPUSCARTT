@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sell an Item – CampusCart</title>
+  <meta name="description" content="List your used textbooks, electronics, calculators or hostel essentials for sale on CampusCart.">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛒</text></svg>">
+  <style>
+    .sell-page-wrapper {
+      padding: 3rem 1.5rem;
+      background: radial-gradient(circle at 50% 10%, rgba(37, 99, 235, 0.05) 0%, rgba(248, 250, 252, 0) 60%);
+      min-height: calc(100vh - var(--header-height));
+    }
+    .sell-card {
+      max-width: 680px;
+      margin: 0 auto;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 2.5rem;
+      box-shadow: var(--shadow-lg);
+    }
+    .form-group {
+      margin-bottom: 1.35rem;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+    .form-label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--secondary);
+      margin-bottom: 0.4rem;
+    }
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      font-size: 0.95rem;
+      font-family: var(--font-body);
+      color: var(--text-main);
+      background: #ffffff;
+      transition: var(--transition);
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      outline: none;
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px var(--primary-glow);
+    }
+    .form-textarea {
+      resize: vertical;
+      min-height: 110px;
+    }
+    .image-preview-box {
+      width: 100%;
+      height: 200px;
+      border: 2px dashed var(--border);
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: #f8fafc;
+      margin-top: 0.5rem;
+    }
+    .image-preview-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .alert-box {
+      display: none;
+      padding: 0.85rem 1rem;
+      border-radius: var(--radius-md);
+      font-size: 0.875rem;
+      margin-bottom: 1.5rem;
+    }
+    .alert-error {
+      background: #fef2f2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
+    .alert-success {
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+    }
+    @media (max-width: 600px) {
+      .form-row { grid-template-columns: 1fr; }
+      .sell-card { padding: 1.5rem 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Sticky Header -->
+  <header class="site-header">
+    <div class="container nav-container">
+      <a href="/" class="brand-logo" aria-label="CampusCart Home">
+        <div class="logo-icon">🛒</div>
+        <span>CampusCart</span>
+        <span class="brand-badge">Sell</span>
+      </a>
+      <div class="nav-actions">
+        <!-- Rendered by auth.js -->
+        <a href="/explore.html" class="btn btn-ghost btn-sm">Explore Deals</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="sell-page-wrapper">
+    <div class="sell-card">
+      <div style="margin-bottom: 1.75rem; border-bottom: 1px solid var(--border); padding-bottom: 1.25rem;">
+        <h1 style="font-size: 1.85rem; color: var(--secondary); margin-bottom: 0.35rem;">Post a Campus Listing</h1>
+        <p style="color: var(--text-muted); font-size: 0.95rem;">Connect with classmates and hostel residents. Zero commission, 100% student hand-offs.</p>
+      </div>
+
+      <div id="alert-box" class="alert-box" role="alert"></div>
+
+      <form id="sell-product-form">
+        <div class="form-group">
+          <label class="form-label" for="title">Listing Title *</label>
+          <input type="text" id="title" class="form-input" placeholder="e.g. Casio fx-991EX ClassWiz or Higher Engineering Math" required minlength="3" maxlength="150">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="category">Category *</label>
+            <select id="category" class="form-select" required>
+              <option value="textbooks">Textbooks & Academic Materials</option>
+              <option value="electronics">Electronics & Gadgets</option>
+              <option value="stationery">Calculators & Stationery</option>
+              <option value="hostel">Hostel & Dorm Essentials</option>
+              <option value="other">Other Student Necessities</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="condition">Item Condition *</label>
+            <select id="condition" class="form-select" required>
+              <option value="Brand New">Brand New (Unopened)</option>
+              <option value="Like New" selected>Like New (Hardly Used)</option>
+              <option value="Excellent">Excellent</option>
+              <option value="Gently Used">Gently Used</option>
+              <option value="Fair">Fair (Noticeable Wear)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="price">Selling Price (₹ INR) *</label>
+            <input type="number" id="price" class="form-input" placeholder="e.g. 450" required min="1" max="500000" step="any">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="originalPrice">Original / MRP Price (₹ Optional)</label>
+            <input type="number" id="originalPrice" class="form-input" placeholder="e.g. 899 (to show savings %)">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="location">Preferred Campus Hand-off Spot *</label>
+          <input type="text" id="location" class="form-input" placeholder="e.g. Central Library, Block A Men's Hostel, Student Center" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Product Photo *</label>
+          <div style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem;">
+            <button type="button" class="btn btn-secondary btn-sm" id="tab-upload-btn" style="flex: 1;">📷 Upload From Device</button>
+            <button type="button" class="btn btn-ghost btn-sm" id="tab-url-btn" style="flex: 1;">🔗 Paste Image URL</button>
+          </div>
+
+          <!-- Upload Dropzone -->
+          <div id="upload-dropzone" style="border: 2px dashed var(--border); border-radius: var(--radius-lg); padding: 1.5rem; text-align: center; background: var(--bg-body); cursor: pointer; transition: var(--transition);">
+            <div style="font-size: 2rem; margin-bottom: 0.5rem;">📸</div>
+            <div style="font-weight: 700; color: var(--secondary); margin-bottom: 0.25rem;">Click to select photo or drag &amp; drop</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">Supports JPG, PNG, WEBP up to 5MB</div>
+            <input type="file" id="imageFileInput" accept="image/*" style="display: none;">
+          </div>
+
+          <!-- URL Input Container -->
+          <div id="url-container" style="display: none; margin-top: 0.75rem;">
+            <input type="url" id="imageUrl" class="form-input" placeholder="https://images.unsplash.com/photo-...">
+            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.35rem;">
+              Or select a preset campus stock image:
+            </div>
+            <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap;">
+              <button type="button" class="badge badge-neutral" style="cursor: pointer;" data-sample="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=700&q=80">📚 Textbook</button>
+              <button type="button" class="badge badge-neutral" style="cursor: pointer;" data-sample="https://images.unsplash.com/photo-1594980596870-8aa52a78d8cd?auto=format&fit=crop&w=700&q=80">📐 Calculator</button>
+              <button type="button" class="badge badge-neutral" style="cursor: pointer;" data-sample="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=700&q=80">🎧 Headphones</button>
+              <button type="button" class="badge badge-neutral" style="cursor: pointer;" data-sample="https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?auto=format&fit=crop&w=700&q=80">🛏️ Study Table</button>
+            </div>
+          </div>
+
+          <div class="image-preview-box" id="preview-box">
+            <span style="color: var(--text-light); font-size: 0.85rem;">Selected image preview will appear here</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="description">Item Description *</label>
+          <textarea id="description" class="form-textarea" placeholder="Describe the item condition, edition, semester used, included cables or accessories..." required minlength="10" maxlength="2500"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="publish-btn" style="width: 100%; padding: 0.85rem; font-size: 1rem; margin-top: 0.5rem;">
+          Publish Campus Listing
+        </button>
+      </form>
+    </div>
+  </main>
+
+  <script src="/js/theme.js"></script>
+  <script src="/js/toast.js"></script>
+  <script src="/js/wishlist.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Must be logged in to sell
+      if (!window.CampusCartAuth.requireAuth('/sell.html')) return;
+
+      const form = document.getElementById('sell-product-form');
+      const submitBtn = document.getElementById('publish-btn');
+      const imageUrlInput = document.getElementById('imageUrl');
+      const previewBox = document.getElementById('preview-box');
+      const dropzone = document.getElementById('upload-dropzone');
+      const fileInput = document.getElementById('imageFileInput');
+      const tabUploadBtn = document.getElementById('tab-upload-btn');
+      const tabUrlBtn = document.getElementById('tab-url-btn');
+      const urlContainer = document.getElementById('url-container');
+
+      let currentImageData = 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=700&q=80';
+
+      function updatePreview(url) {
+        currentImageData = url;
+        if (!url) {
+          previewBox.innerHTML = '<span style="color: var(--text-light); font-size: 0.85rem;">Selected image preview will appear here</span>';
+          return;
+        }
+        previewBox.innerHTML = `<img src="${url}" alt="Preview" onerror="this.parentElement.innerHTML='<span style=\\'color:red; font-size:0.85rem;\\'>Invalid Image URL</span>'">`;
+      }
+
+      // Tab switching between File Upload and URL
+      tabUploadBtn.onclick = () => {
+        tabUploadBtn.className = 'btn btn-secondary btn-sm';
+        tabUrlBtn.className = 'btn btn-ghost btn-sm';
+        dropzone.style.display = 'block';
+        urlContainer.style.display = 'none';
+      };
+
+      tabUrlBtn.onclick = () => {
+        tabUrlBtn.className = 'btn btn-secondary btn-sm';
+        tabUploadBtn.className = 'btn btn-ghost btn-sm';
+        dropzone.style.display = 'none';
+        urlContainer.style.display = 'block';
+      };
+
+      // File upload handling
+      dropzone.onclick = () => fileInput.click();
+
+      dropzone.ondragover = (e) => {
+        e.preventDefault();
+        dropzone.style.borderColor = 'var(--primary)';
+        dropzone.style.background = 'var(--primary-light)';
+      };
+
+      dropzone.ondragleave = () => {
+        dropzone.style.borderColor = 'var(--border)';
+        dropzone.style.background = 'var(--bg-body)';
+      };
+
+      dropzone.ondrop = (e) => {
+        e.preventDefault();
+        dropzone.style.borderColor = 'var(--border)';
+        dropzone.style.background = 'var(--bg-body)';
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+          processFile(e.dataTransfer.files[0]);
+        }
+      };
+
+      fileInput.onchange = (e) => {
+        if (e.target.files && e.target.files[0]) {
+          processFile(e.target.files[0]);
+        }
+      };
+
+      function processFile(file) {
+        if (!file.type.startsWith('image/')) {
+          window.CampusCartToast.error('Invalid File Type', 'Please upload an image file (JPG, PNG, WEBP).');
+          return;
+        }
+        if (file.size > 5 * 1024 * 1024) {
+          window.CampusCartToast.error('File Too Large', 'Please select an image smaller than 5MB.');
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          updatePreview(event.target.result);
+          window.CampusCartToast.success('Photo Attached', `${file.name} ready for publishing.`);
+        };
+        reader.readAsDataURL(file);
+      }
+
+      imageUrlInput.addEventListener('input', (e) => updatePreview(e.target.value.trim()));
+
+      document.querySelectorAll('button[data-sample]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const sampleUrl = btn.getAttribute('data-sample');
+          imageUrlInput.value = sampleUrl;
+          updatePreview(sampleUrl);
+        });
+      });
+
+      // Default sample preview
+      updatePreview(currentImageData);
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const title = document.getElementById('title').value.trim();
+        const category = document.getElementById('category').value;
+        const condition = document.getElementById('condition').value;
+        const price = parseFloat(document.getElementById('price').value);
+        const originalPrice = parseFloat(document.getElementById('originalPrice').value) || null;
+        const location = document.getElementById('location').value.trim();
+
+        if (!currentImageData) {
+          window.CampusCartToast.error('Photo Required', 'Please select or upload a product photo.');
+          return;
+        }
+
+        const description = document.getElementById('description').value.trim();
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Publishing campus listing...';
+
+        try {
+          const payload = {
+            title,
+            category,
+            condition,
+            price,
+            originalPrice,
+            location,
+            imageUrl: currentImageData,
+            description
+          };
+
+          const res = await window.CampusCartAPI.post('/products', payload);
+          if (res && res.data) {
+            window.CampusCartToast.success('Listing Published!', 'Your item is live on CampusCart.');
+            setTimeout(() => {
+              window.location.href = `/product.html?id=${res.data.id || res.data._id}`;
+            }, 900);
+          }
+        } catch (err) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Publish Campus Listing';
+          const msg = (err.details && Array.isArray(err.details))
+            ? err.details.join(', ')
+            : (err.message || 'Failed to publish listing.');
+          window.CampusCartToast.error('Submission Failed', msg);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
