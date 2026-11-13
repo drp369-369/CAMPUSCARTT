@@ -26,8 +26,8 @@
   --bg-subtle: #f1f5f9;
   
   --text-main: #0f172a;
-  --text-muted: #64748b;
-  --text-light: #94a3b8;
+  --text-muted: #475569;
+  --text-light: #64748b;
   --border: #e2e8f0;
   --border-focus: #3b82f6;
 
@@ -304,15 +304,16 @@ img {
 }
 
 .btn-secondary {
-  background: #ffffff;
+  background: var(--bg-surface);
   color: var(--secondary);
-  border-color: var(--border);
+  border: 1px solid var(--border);
   box-shadow: var(--shadow-xs);
 }
 
 .btn-secondary:hover {
   background: var(--bg-subtle);
-  border-color: #cbd5e1;
+  border-color: var(--primary);
+  color: var(--secondary);
 }
 
 .btn-ghost {
@@ -714,61 +715,78 @@ img {
 }
 
 /* ===================================================================
-   DARK THEME CUSTOM PROPERTIES
+   DARK THEME CUSTOM PROPERTIES & CONTRAST GRADING
    =================================================================== */
 [data-theme="dark"] {
   --bg-body: #0b1120;
-  --bg-surface: #131c31;
-  --bg-surface-elevated: #1e293b;
-  --bg-subtle: #19243b;
+  --bg-surface: #111a2e;
+  --bg-surface-elevated: #1a2744;
+  --bg-subtle: #16223b;
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
   --text-light: #64748b;
-  --border: #26334d;
-  --secondary: #f1f5f9;
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
+  --border: #1e293b;
+  --secondary: #f8fafc;
+  --primary-light: rgba(37, 99, 235, 0.2);
+  --accent-light: rgba(16, 185, 129, 0.2);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.6);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.7);
 }
 
 [data-theme="dark"] .site-header {
-  background: rgba(19, 28, 49, 0.92);
-  border-bottom-color: #26334d;
+  background: rgba(17, 26, 46, 0.95);
+  border-bottom-color: var(--border);
 }
 
 [data-theme="dark"] .mobile-nav-drawer {
-  background: #131c31;
+  background: var(--bg-surface);
 }
 
 [data-theme="dark"] .product-card,
+[data-theme="dark"] .hero-main-card,
 [data-theme="dark"] .auth-card,
 [data-theme="dark"] .detail-card,
 [data-theme="dark"] .sell-card,
 [data-theme="dark"] .modal-container,
 [data-theme="dark"] .chat-drawer,
-[data-theme="dark"] .my-listing-card {
-  background: #131c31;
-  border-color: #26334d;
+[data-theme="dark"] .my-listing-card,
+[data-theme="dark"] .category-card {
+  background: var(--bg-surface);
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .card-image-box {
+  background: #0f172a;
+}
+
+[data-theme="dark"] .card-title {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .current-price {
+  color: #f8fafc;
 }
 
 [data-theme="dark"] .form-input,
 [data-theme="dark"] .form-select,
 [data-theme="dark"] .form-textarea,
 [data-theme="dark"] .custom-select {
-  background: #19243b;
-  border-color: #26334d;
-  color: #f8fafc;
+  background: var(--bg-subtle);
+  border-color: var(--border);
+  color: var(--text-main);
 }
 
 [data-theme="dark"] .card-condition-badge {
-  background: #1e293b;
-  color: #f8fafc;
+  background: var(--bg-subtle);
+  color: var(--text-main);
+  border: 1px solid var(--border);
 }
 
 [data-theme="dark"] .user-pill-btn {
-  background: #1e293b !important;
-  border-color: #26334d !important;
+  background: var(--bg-subtle) !important;
+  border-color: var(--border) !important;
   color: #f8fafc !important;
 }
 

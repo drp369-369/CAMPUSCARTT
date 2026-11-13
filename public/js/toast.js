@@ -92,3 +92,4 @@ function escapeHtml(str) {
 document.addEventListener('DOMContentLoaded', () => {
   window.CampusCartToast.init();
 });
+

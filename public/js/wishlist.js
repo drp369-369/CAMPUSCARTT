@@ -68,3 +68,4 @@ window.CampusCartWishlist = {
 document.addEventListener('DOMContentLoaded', () => {
   window.CampusCartWishlist.updateBadges();
 });
+

@@ -42,3 +42,4 @@ window.CampusCartTheme = {
 };
 
 CampusCartTheme.init();
+
